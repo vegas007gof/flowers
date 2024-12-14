@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block body %}
+
+{% for label, messages in app.flashes %}
+    <div class="alert alert-{{ label }}">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<h1>Каталог</h1>
+
+<div class="catalog">
+    {% for flower in flowers %}
+        <div class="catalog-item">
+            <h2>{{ flower.name }}</h2>
+            <p>{{ flower.description }}</p>
+            {% if flower.imagePath %}
+                <img src="{{ asset(flower.imagePath) }}" alt="{{ flower.name }}" class="flower-image">
+            {% else %}
+                <p>No image available</p>
+            {% endif %}
+            
+            <!-- Форма для добавления товара в корзину -->
+            <form action="{{ path('add_to_cart', {'id': flower.id}) }}" method="post">
+                <button type="submit" class="btn btn-primary">В корзину</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Кнопка для перехода в корзину -->
+<div class="cart-link">
+    <a href="{{ path('view_cart') }}" class="btn btn-secondary">Посмотреть корзину</a>
+</div>
+
+{% endblock %}
